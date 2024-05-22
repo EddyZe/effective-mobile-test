@@ -27,14 +27,11 @@ public class User implements Serializable {
     private int id;
 
     @Column(name = "first_name")
-    @NotEmpty(message = "Имя не может быть пустым!")
     private String firstName;
 
-    @NotEmpty(message = "Фамилия не может быть пустой!")
     @Column(name = "last_name")
     private String lastName;
 
-    @NotEmpty(message = "Отчество не может быть пустым!")
     @Column(name = "middle_name")
     private String middleName;
 
@@ -57,10 +54,10 @@ public class User implements Serializable {
     private List<PhoneNumber> phoneNumbers;
 
     @Column(name = "bank_account")
-    private Long bankAccount;
+    private Double bankAccount;
 
     @NotNull(message = "Укажите начальную сумму!")
     @Min(value = 0, message = "Начальная сумма не может быть меньше чем 0!")
     @Column(name = "start_amount")
-    private Long startAmount;
+    private Double startAmount;
 }

@@ -20,28 +20,28 @@ import java.time.LocalDateTime;
 public class ControllerAdvice {
 
     @ExceptionHandler(UserInvalidException.class)
-    private ResponseEntity<ErrorResponse> handlerSellerNotValidException(UserInvalidException e) {
+    private ResponseEntity<ErrorResponse> handlerUserInvalidException(UserInvalidException e) {
         log.error("Failed to create a new user");
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), LocalDateTime.now());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(PhoneNumberIsAlreadyException.class)
-    private ResponseEntity<ErrorResponse> handlerSellerNotValidException(PhoneNumberIsAlreadyException e) {
+    private ResponseEntity<ErrorResponse> handlerPhoneNumberIsAlreadyException(PhoneNumberIsAlreadyException e) {
         log.error("The phone number is already occupied!");
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), LocalDateTime.now());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UsernameIsAlreadyException.class)
-    private ResponseEntity<ErrorResponse> handlerSellerNotValidException(UsernameIsAlreadyException e) {
+    private ResponseEntity<ErrorResponse> handlerUsernameIsAlreadyException(UsernameIsAlreadyException e) {
         log.error("The username is already occupied!");
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), LocalDateTime.now());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(EmailIsAlreadyException.class)
-    private ResponseEntity<ErrorResponse> handlerSellerNotValidException(EmailIsAlreadyException e) {
+    private ResponseEntity<ErrorResponse> handlerEmailIsAlreadyException(EmailIsAlreadyException e) {
         log.error("The email is already occupied!");
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), LocalDateTime.now());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);

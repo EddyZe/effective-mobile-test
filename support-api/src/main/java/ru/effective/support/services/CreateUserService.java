@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.effective.commons.DTO.UserDTO;
+import ru.effective.commons.DTO.CreateUserDTO;
 import ru.effective.commons.entities.EmailAddress;
 import ru.effective.commons.entities.PhoneNumber;
 import ru.effective.commons.entities.User;
@@ -25,23 +25,27 @@ public class CreateUserService {
 
 
     @Transactional
-    public void create(UserDTO userDTO) {
-        User user = userService.save(convertToUser(userDTO));
-        emailAddressService.save(createEmail(user, userDTO.getEmail()));
-        phoneNumberService.save(createPhoneNumber(user, userDTO.getPhoneNumber()));
+    public void create(CreateUserDTO createUserDTO) {
+        User user = userService.save(convertToUser(createUserDTO));
+        emailAddressService.save(createEmail(user, createUserDTO.getEmail()));
+        phoneNumberService.save(createPhoneNumber(user, createUserDTO.getPhoneNumber()));
     }
 
-    private User convertToUser(UserDTO userDTO) {
+    private User convertToUser(CreateUserDTO createUserDTO) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        LocalDate birthDay = null;
+        if (createUserDTO.getBirthDay() != null)
+            birthDay = LocalDate.from(dtf.parse(createUserDTO.getBirthDay()));
+
         return User.builder()
-                .bankAccount(userDTO.getStartAmount())
-                .startAmount(userDTO.getStartAmount())
-                .firstName(userDTO.getFirstName())
-                .lastName(userDTO.getLastName())
-                .middleName(userDTO.getMiddleName())
-                .username(userDTO.getUsername())
-                .password(encoder.encode(userDTO.getPassword()))
-                .birthDay(LocalDate.from(dtf.parse(userDTO.getBirthDay())))
+                .bankAccount(createUserDTO.getStartAmount())
+                .startAmount(createUserDTO.getStartAmount())
+                .firstName(createUserDTO.getFirstName())
+                .lastName(createUserDTO.getLastName())
+                .middleName(createUserDTO.getMiddleName())
+                .username(createUserDTO.getUsername())
+                .password(encoder.encode(createUserDTO.getPassword()))
+                .birthDay(birthDay)
                 .build();
     }
 

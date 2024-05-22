@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.effective.commons.DTO.UserDTO;
+import ru.effective.commons.DTO.CreateUserDTO;
 import ru.effective.commons.exceptions.UserInvalidException;
 import ru.effective.support.services.CreateUserService;
 
@@ -24,9 +24,13 @@ public class CreateUserController {
     private final CreateUserService createUserService;
 
     @PostMapping("create-user")
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid UserDTO userDTO,
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid CreateUserDTO createUserDTO,
                                              BindingResult bindingResult) {
         log.info("Start creating a new user");
+
+        if (createUserDTO.getBirthDay() != null)
+            if (!createUserDTO.getBirthDay().matches("\\d{2}\\.\\d{2}\\.\\d{4}"))
+                throw new UserInvalidException("Введите birth_day в формате дд.мм.гггг");
 
         if (bindingResult.hasErrors()) {
             StringBuilder errorsMessage = new StringBuilder();
@@ -43,7 +47,7 @@ public class CreateUserController {
             throw new UserInvalidException(errorsMessage.toString());
         }
 
-        createUserService.create(userDTO);
+        createUserService.create(createUserDTO);
         log.info("A new user has been created");
         return ResponseEntity.ok(HttpStatus.CREATED);
     }

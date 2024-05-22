@@ -7,7 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 class ClientApiApplicationTests {
 
     @Test
-    void contextLoads() {
+    void testTransferMoney() {
+
+
+
     }
 
 }

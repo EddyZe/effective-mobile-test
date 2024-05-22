@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.effective.clientapi.repositories.EmailRepository;
 import ru.effective.commons.entities.EmailAddress;
+import ru.effective.commons.exceptions.EmailAddressNotFoundException;
 import ru.effective.commons.exceptions.EmailIsAlreadyException;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -33,5 +35,18 @@ public class EmailAddressService {
     @Cacheable(value = "Email", key = "#email")
     public Optional<EmailAddress> findByEmail(String email) {
         return emailRepository.findByEmail(email);
+    }
+
+    public List<EmailAddress> findByUserUsername(String username) {
+        return emailRepository.findByUserUsername(username);
+    }
+
+
+    @Transactional
+    @CacheEvict(value = "Email", key = "#emailAddress.email")
+    public void delete(EmailAddress emailAddress) {
+        if (emailRepository.findByEmail(emailAddress.getEmail()).isEmpty())
+            throw new EmailAddressNotFoundException("Email не найден");
+        emailRepository.delete(emailAddress);
     }
 }
