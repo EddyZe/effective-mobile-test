@@ -24,10 +24,12 @@ public class AuthService {
     public AuthenticationResponse login(UserSingInDTO userSingInDTO) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 userSingInDTO.getUsername(), userSingInDTO.getPassword()));
+
         UserDetailsImpl user = userRepository.findByUsername(userSingInDTO.getUsername())
                 .map(u -> new UserDetailsImpl(userSingInDTO))
                 .orElseThrow(
                 () -> new UserNotFoundException("Пользователь не найден"));
+
         var jwtToken = jwtService.generateToken(user);
         return new AuthenticationResponse(jwtToken);
     }

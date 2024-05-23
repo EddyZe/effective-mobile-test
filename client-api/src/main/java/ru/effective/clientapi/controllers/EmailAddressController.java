@@ -3,6 +3,7 @@ package ru.effective.clientapi.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -20,6 +21,7 @@ import ru.effective.commons.exceptions.UserNotFoundException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("email")
+@Slf4j
 public class EmailAddressController {
 
     private final UserService userService;
@@ -29,7 +31,7 @@ public class EmailAddressController {
     public ResponseEntity<HttpStatus> addEmail(@PathVariable("username") String username,
                                                @RequestBody @Valid EmailAddressDTO emailAddressDTO,
                                                BindingResult bindingResult) {
-
+        log.info("%s add new email".formatted(username));
         handlerBindingResult(bindingResult);
 
         User user = userService.findByUsername(username)
@@ -37,6 +39,7 @@ public class EmailAddressController {
 
         emailAddressService.save(convertToEmailAddress(user, emailAddressDTO));
         userService.update(user);
+        log.info("%s successfully added the email");
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -46,6 +49,7 @@ public class EmailAddressController {
                                                         @RequestBody @Valid EmailAddressDTO emailAddressDTO,
                                                         BindingResult bindingResult) {
 
+        log.info("%s remove email".formatted(username));
         handlerBindingResult(bindingResult);
 
         User user = userService.findByUsername(username)
@@ -61,6 +65,7 @@ public class EmailAddressController {
             throw new PhoneNumberInvalidException("Нельзя удалить единственный email!");
 
         emailAddressService.delete(emailAddress);
+        log.info("%s successfully deleted the email".formatted(username));
 
         return ResponseEntity.ok(HttpStatus.OK);
     }

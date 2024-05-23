@@ -1,16 +1,11 @@
 package ru.effective.clientapi;
 
-import org.junit.jupiter.api.Test;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@Slf4j
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ClientApiApplicationTests {
 
-    @Test
-    void testTransferMoney() {
-
-
-
-    }
-
 }
+

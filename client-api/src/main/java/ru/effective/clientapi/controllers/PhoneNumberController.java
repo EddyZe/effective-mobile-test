@@ -3,6 +3,7 @@ package ru.effective.clientapi.controllers;
 
 import  jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,7 @@ import ru.effective.commons.exceptions.UserNotFoundException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("phone-number")
+@Slf4j
 public class PhoneNumberController {
     private final PhoneNumberService phoneNumberService;
     private final UserService userService;
@@ -27,7 +29,7 @@ public class PhoneNumberController {
     public ResponseEntity<HttpStatus> addPhoneNumber(@PathVariable("username") String username,
                                                      @RequestBody @Valid PhoneNumberDTO phoneNumberDTO,
                                                      BindingResult bindingResult) {
-
+        log.info("%s add phone number".formatted(username));
         handlerBindingResult(bindingResult);
 
         User user = userService.findByUsername(username)
@@ -35,6 +37,7 @@ public class PhoneNumberController {
         
         phoneNumberService.save(convertToPhoneNumber(user, phoneNumberDTO));
         userService.update(user);
+        log.info("%s successfully added the phone number".formatted(username));
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -43,7 +46,7 @@ public class PhoneNumberController {
     public ResponseEntity<HttpStatus> removePhoneNumber(@PathVariable("username") String username,
                                                      @RequestBody @Valid PhoneNumberDTO phoneNumberDTO,
                                                      BindingResult bindingResult) {
-
+        log.info("%s remove phone number");
         handlerBindingResult(bindingResult);
 
         User user = userService.findByUsername(username)
@@ -59,6 +62,8 @@ public class PhoneNumberController {
             throw new PhoneNumberInvalidException("Нельзя удалить единственный номер!");
 
         phoneNumberService.delete(phoneNumber);
+
+        log.info("%s successfully deleted the phone number".formatted(username));
 
         return ResponseEntity.ok(HttpStatus.OK);
     }

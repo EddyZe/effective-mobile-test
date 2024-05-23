@@ -1,8 +1,8 @@
 package ru.effective.clientapi.controllers;
 
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,6 @@ import ru.effective.commons.exceptions.UserInvalidException;
 import ru.effective.commons.exceptions.UserNotFoundException;
 import ru.effective.commons.models.Search;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -26,6 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("users")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -41,6 +41,7 @@ public class UserController {
                                                 @RequestParam(value = "middle-name", required = false) String middleName,
                                                 @RequestBody(required = false) Search search) {
 
+        log.info("started find users");
         LocalDate birthDay = LocalDate.from(dateTimeFormatter.parse("01.01.1900"));
 
         if (search != null) {

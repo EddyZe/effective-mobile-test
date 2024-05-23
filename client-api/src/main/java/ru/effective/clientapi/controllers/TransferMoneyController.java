@@ -3,6 +3,7 @@ package ru.effective.clientapi.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -18,6 +19,7 @@ import ru.effective.commons.models.MoneyTransfer;
 @RestController
 @RequestMapping("transfer")
 @RequiredArgsConstructor
+@Slf4j
 public class TransferMoneyController {
 
     private final UserService userService;
@@ -28,14 +30,14 @@ public class TransferMoneyController {
     public ResponseEntity<HttpStatus> moneyTransfer(@PathVariable String username,
                                                     @RequestBody @Valid MoneyTransfer moneyTransfer,
                                                     BindingResult bindingResult) {
-
+        log.info("%s start transfer money".formatted(username));
         handlerBindingResult(bindingResult);
         if (moneyTransfer.getPhoneNumber() == null && moneyTransfer.getEmail() == null && moneyTransfer.getUsername() == null)
             throw new MoneyTransferException("Введите username пользователя кому хотите сделать перевод, либо email, либо phone_number, чтобы сделать перевод!");
 
 
         User sender = userService.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("Отправитель с таким username не найден"));
+                .orElseThrow(() -> new UserNotFoundException("Отправитель с username \"%s\" не найден".formatted(username)));
 
         Double amountTransfer = moneyTransfer.getAmount();
 
@@ -47,6 +49,7 @@ public class TransferMoneyController {
             transferByEmailAddress(moneyTransfer, sender, amountTransfer);
         }
 
+        log.info("%s transfer money completed".formatted(username));
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -91,6 +94,7 @@ public class TransferMoneyController {
         recipient.setBankAccount(recipient.getBankAccount() + amountTransfer);
         userService.update(sender);
         userService.update(recipient);
+        log.info("The money transfer is completed");
     }
 
     private void handlerBindingResult(BindingResult bindingResult) {

@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:16:///effective
+    username: admin
+    password: admin
+
+
+  redis:
+    data:
+      redis:
+        host: localhost
+        port: 6379

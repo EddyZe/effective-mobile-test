@@ -3,6 +3,7 @@ package ru.effective.clientapi.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import ru.effective.commons.exceptions.UserInvalidException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("auth")
+@Slf4j
 public class AuthController {
 
     private final AuthService authService;
@@ -22,7 +24,7 @@ public class AuthController {
     @PostMapping("login")
     public ResponseEntity<AuthenticationResponse> login(
             @RequestBody @Valid UserSingInDTO userSingInDTO, BindingResult bindingResult) {
-
+        log.info("created jwt token");
         if (bindingResult.hasErrors()) {
             StringBuilder errorsMessage = new StringBuilder();
 

@@ -2,8 +2,8 @@ package ru.effective.clientapi.services;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -11,16 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.effective.clientapi.repositories.UserRepository;
 import ru.effective.commons.entities.User;
 import ru.effective.commons.exceptions.UsernameIsAlreadyException;
-import ru.effective.commons.models.MoneyTransfer;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -60,6 +59,7 @@ public class UserService {
     @Transactional
     @Scheduled(cron = "0 * * * * *")
     public void IncreasingTheBalance() {
+        log.info("started increasing balance");
         List<User> users = userRepository.findAll();
         users.forEach(user -> {
             Double maxBalance = user.getStartAmount() + ((user.getStartAmount() * 207) / 100);
@@ -69,5 +69,6 @@ public class UserService {
                 update(user);
             }
         });
+        log.info("The balance increase is completed");
     }
 }
