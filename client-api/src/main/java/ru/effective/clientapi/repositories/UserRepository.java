@@ -4,12 +4,10 @@ package ru.effective.clientapi.repositories;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import ru.effective.commons.entities.User;
 import org.springframework.stereotype.Repository;
-
+import ru.effective.commons.entities.User;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 

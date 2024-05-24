@@ -39,12 +39,12 @@ public class UserController {
 
 
     @GetMapping("search")
-    @Operation(summary = "Позволяет найти пользователей")
+    @Operation(summary = "Позволяет найти пользователей", description = "можно передать пустой json")
     @SecurityRequirement(name = "JWT")
     public ResponseEntity<List<UserDTO>> search(@RequestParam(value = "firstname", required = false) String firstname,
                                                 @RequestParam(value = "lastname", required = false) String lastname,
                                                 @RequestParam(value = "middle-name", required = false) String middleName,
-                                                @RequestBody(required = false) @Schema(required = false) Search search) {
+                                                @RequestBody(required = false) @io.swagger.v3.oas.annotations.parameters.RequestBody(useParameterTypeSchema = true) Search search) {
 
         log.info("started find users");
         LocalDate birthDay = null;
