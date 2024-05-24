@@ -1,10 +1,23 @@
 
 ## __Описание__
 
-### Stack
+### ___Запуск и компиляция___
+
+Компиляция
+
+>mvn clean install -DskipTests
+
+>docker-compose build
+
+Запуск
+
+>docker-compose up
+
+
+### ___Stack___ 
 
 - redis
 
-- spring
+- spring boot 3
 
 - postgres

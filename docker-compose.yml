@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  client-api:
+    build: ./client-api/
+    ports:
+      - 8081:8081
+    depends_on:
+      - db
+      - cache
+
+  commons:
+    build: ./commons/
+    ports:
+      - 8082:8082
+    depends_on:
+      - db
+      - cache
+
+  support-api:
+    build: ./support-api/
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+      - cache
+
+  db:
+    image: postgres:16
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - type: tmpfs
+        target: /dev/shm
+    environment:
+      POSTGRES_DB: effective
+      DOCKER_USER: postgres
+      POSTGRES_PASSWORD: admin
+
+  cache:
+    image: redis
+    ports:
+      - 6379:6379
+    environment:
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
