@@ -1,6 +1,8 @@
 package ru.effective.clientapi.controllers;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import  jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,8 @@ public class PhoneNumberController {
     private final UserService userService;
 
     @PostMapping("{username}/add-number")
+    @Operation(summary = "добавляет номер")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<HttpStatus> addPhoneNumber(@PathVariable("username") String username,
                                                      @RequestBody @Valid PhoneNumberDTO phoneNumberDTO,
                                                      BindingResult bindingResult) {
@@ -43,6 +47,8 @@ public class PhoneNumberController {
     }
 
     @DeleteMapping("{username}/remove-number")
+    @Operation(summary = "Удаляет номер")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<HttpStatus> removePhoneNumber(@PathVariable("username") String username,
                                                      @RequestBody @Valid PhoneNumberDTO phoneNumberDTO,
                                                      BindingResult bindingResult) {

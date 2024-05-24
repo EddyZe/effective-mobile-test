@@ -1,6 +1,9 @@
 package ru.effective.clientapi.controllers;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -36,13 +39,15 @@ public class UserController {
 
 
     @GetMapping("search")
+    @Operation(summary = "Позволяет найти пользователей")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<List<UserDTO>> search(@RequestParam(value = "firstname", required = false) String firstname,
                                                 @RequestParam(value = "lastname", required = false) String lastname,
                                                 @RequestParam(value = "middle-name", required = false) String middleName,
-                                                @RequestBody(required = false) Search search) {
+                                                @RequestBody(required = false) @Schema(required = false) Search search) {
 
         log.info("started find users");
-        LocalDate birthDay = LocalDate.from(dateTimeFormatter.parse("01.01.1900"));
+        LocalDate birthDay = null;
 
         if (search != null) {
             if (search.getPhoneNumber() != null && search.getEmail() != null) {

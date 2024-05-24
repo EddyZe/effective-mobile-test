@@ -1,6 +1,7 @@
 package ru.effective.clientapi.controllers;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("login")
+    @Operation(summary = "Авторизация пользователя", description = "Возвращает jwt токен")
     public ResponseEntity<AuthenticationResponse> login(
             @RequestBody @Valid UserSingInDTO userSingInDTO, BindingResult bindingResult) {
         log.info("created jwt token");

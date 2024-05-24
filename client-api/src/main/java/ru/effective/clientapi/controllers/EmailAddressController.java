@@ -1,6 +1,8 @@
 package ru.effective.clientapi.controllers;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,8 @@ public class EmailAddressController {
     private final EmailAddressService emailAddressService;
 
     @PostMapping("{username}/add-email")
+    @Operation(summary = "Добавляет email", description = "Позволяет добавить email")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<HttpStatus> addEmail(@PathVariable("username") String username,
                                                @RequestBody @Valid EmailAddressDTO emailAddressDTO,
                                                BindingResult bindingResult) {
@@ -45,6 +49,8 @@ public class EmailAddressController {
     }
 
     @DeleteMapping("{username}/remove-email")
+    @Operation(summary = "Удаляет email")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<HttpStatus> removePhoneNumber(@PathVariable("username") String username,
                                                         @RequestBody @Valid EmailAddressDTO emailAddressDTO,
                                                         BindingResult bindingResult) {

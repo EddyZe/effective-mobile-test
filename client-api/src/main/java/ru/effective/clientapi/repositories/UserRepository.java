@@ -18,8 +18,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByUsername(String username);
 
 
-    @Query("select u from User u where 1=1 " +
-           "and cast(:birthDay as localdate ) is null or u.birthDay > cast(:birthDay as localdate) or u.birthDay is null " +
+    @Query("select u from User u where (:birthDay is null or u.birthDay > :birthDay) " +
            "and (:#{#firstname} is null or u.firstName like %:#{#firstname}%)" +
            "and(:#{#lastname} is null or u.lastName like %:#{#lastname}%)" +
            "and (:#{#middleName} is null or u.middleName like %:#{#middleName}%)")

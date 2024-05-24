@@ -1,6 +1,8 @@
 package ru.effective.clientapi.controllers;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,8 @@ public class TransferMoneyController {
     private final EmailAddressService emailAddressService;
 
     @PostMapping("{username}/money-transfer")
+    @Operation(summary = "Сделать перевод", description = "Можно сделать перевод указав номер, email, или username, указать нужно что-то одно.")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<HttpStatus> moneyTransfer(@PathVariable String username,
                                                     @RequestBody @Valid MoneyTransfer moneyTransfer,
                                                     BindingResult bindingResult) {
