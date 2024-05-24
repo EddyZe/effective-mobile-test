@@ -25,6 +25,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(auth -> {
+            auth.requestMatchers("/swagger-ui/**", "v3/**", "/configuration/ui").permitAll();
+            auth.requestMatchers("/swagger-resources/**", "/configuration/security", "/webjars/**");
             auth.requestMatchers("auth/login").permitAll();
             auth.anyRequest().authenticated();
         });

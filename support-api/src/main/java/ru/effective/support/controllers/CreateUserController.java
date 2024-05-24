@@ -18,7 +18,7 @@ import ru.effective.support.services.CreateUserService;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("support-api")
+@RequestMapping("support")
 public class CreateUserController {
 
     private final CreateUserService createUserService;
